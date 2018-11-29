@@ -1,4 +1,7 @@
 import com.codecool.termlib.*;
+
+
+
 import java.util.*;
 import java.io.*;
 import java.math.*;
@@ -77,7 +80,7 @@ public class BlackJack {
 
 	private static int menu() {
 		
-		System.out.println("Welcome to the game!");
+		System.out.println("Welcome to the game!\n");
 		while (playerNum > 2) {
 		System.out.println("Press 1 to play against the Dealer. Press 2 to play with a friend (or foe)");
 		try {
@@ -93,32 +96,35 @@ public class BlackJack {
 
 	private static void firstDeal() {
 		cardCounter = 2;
-		//terminal.clearScreen();
 		playerHand[0] = getOneRandomCard();
 		playerScore = calculatePoints(playerHand[0]);
 		playerHand[1] = getOneRandomCard();
 		playerScore += calculatePoints(playerHand[1]);
 		// We should change char '0' to string '10'!
-		System.out.println("Player1: You got two cards: " + Character.toString(playerHand[0]) + " and " + Character.toString(playerHand[1]));
-		//Change the color of Player1
+		terminal.setColor(Color.GREEN);
+		System.out.println("\nPlayer1: You got two cards: " + Character.toString(playerHand[0]) + " and " + Character.toString(playerHand[1]));
+
 		System.out.println("Player1: Your score is " + Integer.toString(playerScore));
+		terminal.setColor(Color.WHITE);
 	}
 
 	private static void firstDealPlayer2() {
 		player2cardCounter = 2;
-		//terminal.clearScreen();
 		player2Hand[0] = getOneRandomCard();
 		player2Score = calculatePoints(player2Hand[0]);
 		player2Hand[1] = getOneRandomCard();
 		player2Score += calculatePoints(player2Hand[1]);
-		System.out.println("Player2: You got two cards: " + Character.toString(player2Hand[0]) + " and " + Character.toString(player2Hand[1]));
-		//Change color of Player2
+		terminal.setColor(Color.YELLOW);
+		System.out.println("\nPlayer2: You got two cards: " + Character.toString(player2Hand[0]) + " and " + Character.toString(player2Hand[1]));
+
 		System.out.println("Player2: Your score is " + Integer.toString(player2Score));
+		terminal.setColor(Color.WHITE);
+
 	}
 
 	private static void playerTurn() {
-		
-		System.out.println("Player1: Do you want another card? (Y/N)");
+		terminal.setColor(Color.GREEN);
+		System.out.println("\nPlayer1: Do you want another card? (Y/N)");
 		
 		char playerInput = scanner.next().charAt(0);
 
@@ -126,12 +132,13 @@ public class BlackJack {
 
 			playerHand[cardCounter] = getOneRandomCard();
 			playerScore += calculatePoints(playerHand[cardCounter]);
-			System.out.println("Player1: You got: " + Character.toString(playerHand[cardCounter]));
+			
+			System.out.println("\nPlayer1: You got: " + Character.toString(playerHand[cardCounter]));
 			System.out.println("Player1: Your new score: " + Integer.toString(playerScore));
 			cardCounter += 1;
 			turn+=1;
 			if (playerScore > 21) {
-				System.out.println("Player1: Sorry, you lost :(");
+				System.out.println("\nPlayer1: Sorry, you lost :(\n");
 				playerScore = -1;
 				playerInGame = false;
 				
@@ -141,13 +148,13 @@ public class BlackJack {
 		if (playerInput == 'n' || playerInput == 'N') {	
 			playerInGame = false;
 		}
-		
+		terminal.setColor(Color.WHITE);
 	}
 
 
 	private static void player2Turn() {
-		
-		System.out.println("Player2: Do you want another card? (Y/N)");
+		terminal.setColor(Color.YELLOW);
+		System.out.println("\nPlayer2: Do you want another card? (Y/N)");
 		
 		char playerInput = scanner.next().charAt(0);
 
@@ -155,12 +162,12 @@ public class BlackJack {
 
 			player2Hand[cardCounter] = getOneRandomCard();
 			player2Score += calculatePointsPlayer2(player2Hand[cardCounter]);
-			System.out.println("Player2: You got: " + Character.toString(player2Hand[cardCounter]));
+			System.out.println("\nPlayer2: You got: " + Character.toString(player2Hand[cardCounter]));
 			System.out.println("Player2: Your new score: " + Integer.toString(player2Score));
 			cardCounter += 1;
 			turn += 1;
 			if (player2Score > 21) {
-				System.out.println("Player2: Sorry, you lost :(");
+				System.out.println("\nPlayer2: Sorry, you lost :(\n");
 				player2Score = -1;
 				player2InGame = false;	
 			}
@@ -170,7 +177,7 @@ public class BlackJack {
 			player2InGame = false;
 		}
 		
-
+		terminal.setColor(Color.WHITE);
 	}
 	
 	private static void dealerTurn() {
@@ -179,20 +186,21 @@ public class BlackJack {
 		dealerScore = calculatePoints(playerHand[0]);
 		playerHand[1] = getOneRandomCard();
 		dealerScore += calculatePoints(playerHand[1]);
-		System.out.println("Dealer got two cards: " + Character.toString(playerHand[0]) + " and " + Character.toString(playerHand[1]));
+		System.out.println("\nDealer got two cards: " + Character.toString(playerHand[0]) + " and " + Character.toString(playerHand[1]));
 		System.out.println("Dealer's score: " + Integer.toString(dealerScore));
 		
 		while (dealerScore < 17) {
 			playerHand[cardCounter] = getOneRandomCard();
 			dealerScore += calculatePoints(playerHand[cardCounter]);
 			System.out.println("Dealer got: " + Character.toString(playerHand[cardCounter]));
-			System.out.println("Dealer's new score: " + Integer.toString(dealerScore));
+			System.out.println("Dealer's new score: " + Integer.toString(dealerScore) + "\n");
 			cardCounter += 1;
 		}
 		
 	}
 
 	private static void endOfGame() {
+		terminal.setColor(Color.MAGENTA);
 		if (dealerScore > 21) {
 			System.out.println("Dealer lost, free money for everyone!!! -yes you have just won-");
 		}
@@ -209,7 +217,7 @@ public class BlackJack {
 			System.out.println("Wow, you won 5 if statements, you win for now...");
 		}
 		
-		System.out.println("Press 'A' to play again / 'Q' to quit.");
+		System.out.println("Press 'A' to play again / 'Q' to quit.\n");
 		char playerInput = scanner.next().charAt(0);
 		
 		if (playerInput == 'A' || playerInput == 'a') {
@@ -220,11 +228,12 @@ public class BlackJack {
 		else {
 			gameOn = false;
 		}
-		
-		
+		terminal.clearScreen();
+		terminal.setColor(Color.WHITE);
 	}
 
 	private static void endOfMulti() {
+		terminal.setColor(Color.MAGENTA);
 		if (dealerScore > 21) {
 			System.out.println("Dealer lost, free money for everyone!!! -yes you have just won-");
 		}
@@ -244,7 +253,7 @@ public class BlackJack {
 			System.out.println("PLAYER2 is Victorious! You won 10 Terminal Coins! Spend it wisely.");
 		};
 		
-		System.out.println("Press 'A' to play again / 'Q' to quit.");
+		System.out.println("Press 'A' to play again / 'Q' to quit.\n");
 		char playerInput = scanner.next().charAt(0);
 		
 		if (playerInput == 'A' || playerInput == 'a') {
@@ -256,8 +265,9 @@ public class BlackJack {
 		else {
 			gameOn = false;
 		}
-
+		terminal.clearScreen();
 		turn=1;
+		terminal.setColor(Color.WHITE);
 		// if some player gets 21, but then the dealer loses, then both player 1 and 2 win?
 	}
 
