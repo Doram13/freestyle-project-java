@@ -10,10 +10,10 @@ import java.math.*;
 public class BlackJack {
 
 	private static final char[] cards = new char[] {
-	'2', '3', '4', '5', '6', '7', '8', '9', '0', 'J', 'Q', 'K', 'A',
-	'2', '3', '4', '5', '6', '7', '8', '9', '0', 'J', 'Q', 'K', 'A',
-	'2', '3', '4', '5', '6', '7', '8', '9', '0', 'J', 'Q', 'K', 'A',
-	'2', '3', '4', '5', '6', '7', '8', '9', '0', 'J', 'Q', 'K', 'A'
+	'2', '3', '4', '5', '6', '7', '8', '9', 'X', 'J', 'Q', 'K', 'A',
+	'2', '3', '4', '5', '6', '7', '8', '9', 'X', 'J', 'Q', 'K', 'A',
+	'2', '3', '4', '5', '6', '7', '8', '9', 'X', 'J', 'Q', 'K', 'A',
+	'2', '3', '4', '5', '6', '7', '8', '9', 'X', 'J', 'Q', 'K', 'A'
 	};
 
 	private static final Scanner scanner = new Scanner(System.in);
@@ -79,10 +79,11 @@ public class BlackJack {
 	}
 
 	private static int menu() {
-		
+		// TODO: If we press anything other than 1 or 2 then it breaks (infinite loop)
 		System.out.println("Welcome to the game!\n");
 		while (playerNum > 2) {
 		System.out.println("Press 1 to play against the Dealer. Press 2 to play with a friend (or foe)");
+		int playerInput = scanner.next().charAt(0);
 		try {
 			playerNum = scanner.nextInt();
 		} catch (InputMismatchException e) {
@@ -234,6 +235,7 @@ public class BlackJack {
 
 	private static void endOfMulti() {
 		terminal.setColor(Color.MAGENTA);
+		// FURTHER CASES HAS TO BE HANDLED!
 		if (dealerScore > 21) {
 			System.out.println("Dealer lost, free money for everyone!!! -yes you have just won-");
 		}
@@ -241,8 +243,8 @@ public class BlackJack {
 			System.out.println("Dealer was victorious this time, but not for long..");
 		}
 		
-		else if (dealerScore == playerScore && dealerScore == player2Score) {
-			System.out.println("It's a tie, you get your money back!!");
+		else if ( playerScore == player2Score) {
+			System.out.println("It's a tie! Let the fist fight commence");
 		}
 		
 		else if (dealerScore < playerScore && playerScore < 22 && playerScore > player2Score) {
@@ -313,7 +315,7 @@ public class BlackJack {
             case '9' :
                 points = 9;
 		break;
-            case '0' :
+            case 'X' :
             case 'J' :
             case 'Q' :
             case 'K' :
@@ -361,7 +363,7 @@ public class BlackJack {
 				case '9' :
 					points = 9;
 			break;
-				case '0' :
+				case 'X' :
 				case 'J' :
 				case 'Q' :
 				case 'K' :
