@@ -61,15 +61,11 @@ public class BlackJack {
 				if ( playerScore < 22 || player2Score < 22) {
 					dealerTurn();
 				}
-				endOfGame();
+				endOfMulti();
 			}
 		}
-				
-		
-
-
 	}
-	//b n
+
 	private static int menu() {
 		
 		System.out.println("Welcome to the game!");
@@ -78,7 +74,7 @@ public class BlackJack {
 		try {
 			playerNum = scanner.nextInt();
 		} catch (InputMismatchException e) {
-			System.out.println("Please enter a number");
+			System.out.println("Please enter 1 or 2!");
 		}
 		}
 		return playerNum;
@@ -209,6 +205,41 @@ public class BlackJack {
 		
 	}
 
+	private static void endOfMulti() {
+		if (dealerScore > 21) {
+			System.out.println("Dealer lost, free money for everyone!!! -yes you have just won-");
+		}
+		else if (dealerScore > playerScore && dealerScore > player2Score && dealerScore < 22) {
+			System.out.println("Dealer was victorious this time, but not for long..");
+		}
+		
+		else if (dealerScore == playerScore && dealerScore == player2Score) {
+			System.out.println("It's a tie, you get your money back!!");
+		}
+		
+		else if (dealerScore < playerScore && playerScore < 22 && playerScore > player2Score) {
+			System.out.println("PLAYER1 is Victorious! You won 10 Terminal Coins! Spend it wisely.");
+		}
+
+		else if (dealerScore < player2Score && player2Score < 22 && player2Score > playerScore) {
+			System.out.println("PLAYER2 is Victorious! You won 10 Terminal Coins! Spend it wisely.");
+		}
+		
+		System.out.println("Press 'A' to play again / 'Q' to quit.");
+		char playerInput = scanner.next().charAt(0);
+		
+		if (playerInput == 'A' || playerInput == 'a') {
+			playerTurn = true;
+			
+		}
+		
+		else {
+			gameOn = false;
+		}
+
+
+	}
+
 	private static char getOneRandomCard(){
         Random rand = new Random();
         char dealtCards = '2';
@@ -266,6 +297,54 @@ public class BlackJack {
 		    break;
 	        }
            } return points;
-       }
+	   }
+	   
+	private static int calculatePointsPlayer2(char card) {
+		int points = 0;
+		int score = dealerScore;
+		if (playerTurn == true) {
+			score = playerScore;
+		}
+			switch (card) {
+				case '2' :
+					points = 2;
+			break;
+				case '3' :
+					points = 3;
+			break;
+				case '4' :
+					points = 4;
+			break;
+				case '5' :
+					points = 5;
+			break;
+				case '6' :
+					points = 6;
+			break;
+				case '7' :
+					points = 7;
+			break;
+				case '8' :
+					points = 8;
+			break;
+				case '9' :
+					points = 9;
+			break;
+				case '0' :
+				case 'J' :
+				case 'Q' :
+				case 'K' :
+					points = 10;
+			break;
+			case 'A' :
+				if ((score + 11) > 21) {
+					points = 1;
+				break;
+				} else {
+					points = 11;
+				break;
+				}
+			} return points;
+		}
 
 }
