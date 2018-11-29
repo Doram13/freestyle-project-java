@@ -16,9 +16,11 @@ public class BlackJack {
 	private static final Scanner scanner = new Scanner(System.in);
 	private static final Terminal terminal = new Terminal();
 	
+	private static int turn = 1;
 	private static boolean gameOn = true;
-	private static boolean playerTurn = true;
-	private static boolean player2Turn = true;
+	private static boolean matchOn = false;
+	private static boolean playerInGame = true;
+	private static boolean player2InGame = true;
 	
 	private static char[] playerHand = new char[] {
 	'0', '0', '0', '0', '0', '0', '0', '0', '0', '0'
@@ -41,7 +43,7 @@ public class BlackJack {
 			playerNum = menu();
 			if (playerNum == 1) {
 				firstDeal();	
-				while ( playerTurn == true) {
+				while ( playerInGame == true) {
 					playerTurn();
 				}	
 				if ( playerScore < 22 ) {
@@ -52,16 +54,23 @@ public class BlackJack {
 			else {
 				firstDeal();
 				firstDealPlayer2();
-				while (playerTurn == true) {
-					playerTurn();
+				while (matchOn == true) {
+					if (playerInGame==true && turn==1) {
+					playerTurn();}
+					turn = 2;
+					if (player2InGame == true && turn==2) {
+					player2Turn();}
+					turn = 1;
+					if (player2InGame==false && playerInGame==false) {
+						matchOn = false;
+					}
 				}
-				while (player2Turn == true) {
-					player2Turn();
-				}
+				
 				if ( playerScore < 22 || player2Score < 22) {
 					dealerTurn();
 				}
 				endOfMulti();
+
 			}
 		}
 	}
@@ -77,13 +86,14 @@ public class BlackJack {
 			System.out.println("Please enter 1 or 2!");
 		}
 		}
+		matchOn = true;
 		return playerNum;
 	}
 	
 
 	private static void firstDeal() {
 		cardCounter = 2;
-		terminal.clearScreen();
+		//terminal.clearScreen();
 		playerHand[0] = getOneRandomCard();
 		playerScore = calculatePoints(playerHand[0]);
 		playerHand[1] = getOneRandomCard();
@@ -96,7 +106,7 @@ public class BlackJack {
 
 	private static void firstDealPlayer2() {
 		player2cardCounter = 2;
-		terminal.clearScreen();
+		//terminal.clearScreen();
 		player2Hand[0] = getOneRandomCard();
 		player2Score = calculatePoints(player2Hand[0]);
 		player2Hand[1] = getOneRandomCard();
@@ -119,16 +129,21 @@ public class BlackJack {
 			System.out.println("Player1: You got: " + Character.toString(playerHand[cardCounter]));
 			System.out.println("Player1: Your new score: " + Integer.toString(playerScore));
 			cardCounter += 1;
+			turn+=1;
 			if (playerScore > 21) {
 				System.out.println("Player1: Sorry, you lost :(");
-				playerTurn = false;	
+				playerScore = -1;
+				playerInGame = false;
+				
 			}
 
 		} 
 		if (playerInput == 'n' || playerInput == 'N') {	
-			playerTurn = false;
+			playerInGame = false;
 		}
+		
 	}
+
 
 	private static void player2Turn() {
 		
@@ -139,19 +154,23 @@ public class BlackJack {
 		if (playerInput == 'y' || playerInput == 'Y') {
 
 			player2Hand[cardCounter] = getOneRandomCard();
-			player2Score += calculatePoints(player2Hand[cardCounter]);
+			player2Score += calculatePointsPlayer2(player2Hand[cardCounter]);
 			System.out.println("Player2: You got: " + Character.toString(player2Hand[cardCounter]));
 			System.out.println("Player2: Your new score: " + Integer.toString(player2Score));
 			cardCounter += 1;
+			turn += 1;
 			if (player2Score > 21) {
 				System.out.println("Player2: Sorry, you lost :(");
-				player2Turn = false;	
+				player2Score = -1;
+				player2InGame = false;	
 			}
 
 		} 
 		if (playerInput == 'n' || playerInput == 'N') {	
-			player2Turn = false;
+			player2InGame = false;
 		}
+		
+
 	}
 	
 	private static void dealerTurn() {
@@ -194,7 +213,7 @@ public class BlackJack {
 		char playerInput = scanner.next().charAt(0);
 		
 		if (playerInput == 'A' || playerInput == 'a') {
-			playerTurn = true;
+			playerInGame = true;
 			
 		}
 		
@@ -209,7 +228,7 @@ public class BlackJack {
 		if (dealerScore > 21) {
 			System.out.println("Dealer lost, free money for everyone!!! -yes you have just won-");
 		}
-		else if (dealerScore > playerScore && dealerScore > player2Score && dealerScore < 22) {
+		else if (dealerScore > playerScore && dealerScore > player2Score) {
 			System.out.println("Dealer was victorious this time, but not for long..");
 		}
 		
@@ -223,13 +242,14 @@ public class BlackJack {
 
 		else if (dealerScore < player2Score && player2Score < 22 && player2Score > playerScore) {
 			System.out.println("PLAYER2 is Victorious! You won 10 Terminal Coins! Spend it wisely.");
-		}
+		};
 		
 		System.out.println("Press 'A' to play again / 'Q' to quit.");
 		char playerInput = scanner.next().charAt(0);
 		
 		if (playerInput == 'A' || playerInput == 'a') {
-			playerTurn = true;
+			playerInGame = true;
+			player2InGame = true;
 			
 		}
 		
@@ -237,7 +257,8 @@ public class BlackJack {
 			gameOn = false;
 		}
 
-
+		turn=1;
+		// if some player gets 21, but then the dealer loses, then both player 1 and 2 win?
 	}
 
 	private static char getOneRandomCard(){
@@ -254,7 +275,7 @@ public class BlackJack {
     private static int calculatePoints(char card) {
         int points = 0;
 	int score = dealerScore;
-	if (playerTurn == true) {
+	if (playerInGame == true) {
 		score = playerScore;
 	}
         switch (card) {
@@ -302,7 +323,7 @@ public class BlackJack {
 	private static int calculatePointsPlayer2(char card) {
 		int points = 0;
 		int score = dealerScore;
-		if (playerTurn == true) {
+		if (playerInGame == true) {
 			score = playerScore;
 		}
 			switch (card) {
