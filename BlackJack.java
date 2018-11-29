@@ -79,16 +79,14 @@ public class BlackJack {
 	}
 
 	private static int menu() {
-		// TODO: If we press anything other than 1 or 2 then it breaks (infinite loop)
+		// TODO: If we press anything other than 1
 		System.out.println("Welcome to the game!\n");
-		while (playerNum > 2) {
+
 		System.out.println("Press 1 to play against the Dealer. Press 2 to play with a friend (or foe)");
-		int playerInput = scanner.next().charAt(0);
 		try {
 			playerNum = scanner.nextInt();
 		} catch (InputMismatchException e) {
 			System.out.println("Please enter 1 or 2!");
-		}
 		}
 		matchOn = true;
 		return playerNum;
