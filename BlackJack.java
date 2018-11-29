@@ -246,13 +246,13 @@ public class BlackJack {
 		}
 		
 		else if (dealerScore < playerScore && playerScore < 22 && playerScore > player2Score) {
-			System.out.println("PLAYER1 is Victorious! You won 10 Terminal Coins! Spend it wisely.");
+			System.out.println("PLAYER1 is Victorious! You won 10 Console Coins! Spend it wisely.");
 		}
 
 		else if (dealerScore < player2Score && player2Score < 22 && player2Score > playerScore) {
-			System.out.println("PLAYER2 is Victorious! You won 10 Terminal Coins! Spend it wisely.");
+			System.out.println("PLAYER2 is Victorious! You won 10 Console Coins! Spend it wisely.");
 		};
-		
+		//else if (dealerScore == playerScore || dealerScore == player2Score)
 		System.out.println("Press 'A' to play again / 'Q' to quit.\n");
 		char playerInput = scanner.next().charAt(0);
 		
@@ -274,20 +274,14 @@ public class BlackJack {
 	private static char getOneRandomCard(){
         Random rand = new Random();
         char dealtCards = '2';
-
         int randomIndex = rand.nextInt(52);
         dealtCards = cards[randomIndex];
-
         return dealtCards;
-
     }
 
     private static int calculatePoints(char card) {
         int points = 0;
-	int score = dealerScore;
-	if (playerInGame == true) {
-		score = playerScore;
-	}
+	int score = playerScore;
         switch (card) {
             case '2' :
                 points = 2;
@@ -332,10 +326,7 @@ public class BlackJack {
 	   
 	private static int calculatePointsPlayer2(char card) {
 		int points = 0;
-		int score = dealerScore;
-		if (playerInGame == true) {
-			score = playerScore;
-		}
+		int score = player2Score;
 			switch (card) {
 				case '2' :
 					points = 2;
